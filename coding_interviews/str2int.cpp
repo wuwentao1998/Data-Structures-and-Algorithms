@@ -1,7 +1,10 @@
+// 把一个字符串转为整数
+
 #include <string>
 #include <cstring>
 #include <ctype.h>
 #include <assert.h>
+
 int str2int(const char *str)
 {
     if (str == nullptr)
@@ -23,11 +26,11 @@ int str2int(const char *str)
         str += 1;
     }
 
-    if (*str < '0' || *str > '9')
+    if (!isdigit(*str))
         throw "wrong input: not a number";
 
     int result = 0;
-    while (*str != 0 && *str >= '0' && *str <= '9')
+    while (*str != 0 && isdigit(*str))
     {
         result = result * 10 + *str - '0';
         if (result < 0)
@@ -55,6 +58,7 @@ const char* exception (const char* str)
     return "no exception";
 }
 
+/* 测试代码 */
 
 int main(int argc, char const *argv[])
 {
