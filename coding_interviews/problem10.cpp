@@ -1,20 +1,24 @@
 // 斐波那契数列的计算
+// 青蛙跳台阶问题实质是一个斐波那契数列问题
 
 #include <assert.h>
 
 //尾递归实现
 
-long fibonacci(long first, long second, int n)
+long fibonacci_R(int first, int second, int n)
 {
-    if (n <= 1)
+    if (n == 1)
         return first;
-    else
-        return fibonacci(second, first + second, n - 1);
+
+    return fibonacci_R(second, first + second, n - 1);
 }
 
 long fibonacci_R(int n)
 {
-    return fibonacci(1, 1, n);
+    if (n <= 0)
+        throw "invalid input";
+
+    return fibonacci_R(1, 1, n);
 }
 
 
@@ -40,11 +44,15 @@ long fibonacci(int n)
 }
 
 
+
+
 /*测试代码*/
 
 int main(int argc, char const *argv[])
 {
     assert(fibonacci(10) == 55);
     assert(fibonacci_R(10) == 55);
+    assert(fibonacci(1) == 1);
+    assert(fibonacci_R(1) == 1);
     return 0;
 }
