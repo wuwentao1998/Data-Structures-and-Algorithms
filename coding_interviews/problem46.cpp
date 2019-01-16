@@ -6,7 +6,7 @@ using namespace std;
 
 // 递归版
 
-void transform(string str, int& count)
+void transform(const string& str, int& count)
 {
     if (str.empty())
     {
@@ -21,7 +21,7 @@ void transform(string str, int& count)
 }
 
 // 循环版
-void transform_v2(string str, int& count)
+void transform_v2(const string& str, int& count)
 {
     int len = str.size();
     vector<int> counts;

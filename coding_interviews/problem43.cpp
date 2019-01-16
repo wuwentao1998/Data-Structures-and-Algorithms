@@ -32,7 +32,7 @@ int NumberOfOne(unsigned int n)
 }
 
 // 方法二：
-int NumberOfOne_v2(string str)
+int NumberOfOne_v2(const string& str)
 {
     if (str.empty() || str[0] < '0' || str[0] > '9')
         return;

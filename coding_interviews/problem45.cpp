@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-bool compare(string a, string b)
+bool compare(const string& a, const string& b)
 {
     string cp1 = a + b;
     string cp2 = b + a;
