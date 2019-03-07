@@ -72,8 +72,8 @@ void combination(string str)
 
 int main(int argc, char const *argv[])
 {
-    //permutation("abc");
-    combination("abc");
+    permutation("abb");
+    combination("abb");
     return 0;
 }
 

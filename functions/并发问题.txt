@@ -1,0 +1,189 @@
+// 生产者和消费者问题
+#define N 100
+
+semaphore mutex = 1;
+semaphore gap = N;
+semaphore product = 0;
+
+void producer()
+{
+    T item = produce();
+    down(&gap); //
+    down(&mutex);
+    insert(item);
+    up(&mutex);
+    up(&product); //
+}
+
+void consumer()
+{
+    down(&product); //
+    down(&mutex);
+    T item = get();
+    up(&mutex);
+    up(&gap); //
+    process(item);
+}
+
+// 读者写者问题
+
+// 读者优先
+
+int readcount = 0;
+mutex lock = 1;
+mutex db = 1;
+
+void reader()
+{
+    down(&lock);
+    if (readcount == 0)
+        down(&db);
+    readcount++;
+    up(&lock);
+    reading();
+    down(&lock);
+    readcount--;
+    if (readcount == 0)
+        up(&db);
+    up(&mutex);
+}
+
+void writer()
+{
+    down(&db);
+    writing();
+    up(&db);
+}
+
+
+// 公平策略
+mutex lock_readcount = 1;
+mutex lock_next = 1;
+mutex db = 1;
+int readcount = 0;
+
+void reader()
+{
+    down(&lock_next);
+    down(&lock_readcount);
+    if (readcount == 0)
+        down(&db);
+    readcount++;
+    up(&lock_readcount);
+    reading();
+    up(&lock_next);
+    down(&lock_readcount);
+    readcount--;
+    if (readcount == 0)
+        up(&db);
+    up(&lock_readcount);
+}
+
+void writer()
+{
+    down(&lock_next);
+    down(&db);
+    writing();
+    up(&db);
+    up(&lock_next);
+}
+
+// 写者优先
+mutex lock_writecount = 1;
+mutex lock_readcount = 1;
+mutex db = 1;
+mutex lock_next = 1;
+int writecount = 0;
+int readcount = 0;
+
+void reader()
+{
+    down(&lock_next);
+    down(&lock_readcount);
+    if (readcount == 0)
+        down(&db);
+    readcount++;
+    up(&lock_readcount);
+    up(&lock_next);
+    reading();
+    down(&lock_readcount);
+    readcount--;
+    if (readcount == 0)
+        up(&db);
+    up(&lock_readcount);
+}
+
+void writer()
+{
+    down(&lock_writecount);
+    if (writecount == 0)
+        down(&lock_next);
+    writecount++;
+    up(&lock_writecount);
+    down(&db);
+    writing();
+    up(&db);
+    down(&lock_writecount);
+    writecount--;
+    if (writecount == 0)
+        up(&lock_next);
+    up(&lock_writecount);
+}
+
+
+// peterson解法
+int turn;
+int interested[2];
+
+enter_region(int process)
+{
+    int other = 1 - process;
+    interested[process] = 1;
+    turn = process;
+    while(turn == process && interested[other] == 1)
+    ;
+}
+
+leave_region(int process)
+{
+    interested[process] = 0;
+}
+
+
+// 哲学家就餐问题
+#define N 10
+#define LEFT(i) ((i + 1) % N)
+#define RIGHT(i) ((i + N - 1) % N)
+
+enum STATE{hungry, thinking, eating};
+STATE state[N];
+mutex lock = 1;
+mutex s[N];
+
+take_fork(int i)
+{
+    down(&lock);
+    state[i] = hungry;
+    test(i);
+    up(&lock);
+    down(&s[i]);
+}
+
+put_fork(int i)
+{
+    down(&lock);
+    state[i] = thinking;
+    test(LEFT(i));
+    test(RIGHT(i));
+    up(&lock);
+}
+
+void test(int i)
+{
+    if (state[i] == hungry && state[LEFT(i)] != eating && state[RIGHT(i)] != eating)
+    {
+        state[i] = eating;
+        up(&s[i]);
+    }
+}
+
