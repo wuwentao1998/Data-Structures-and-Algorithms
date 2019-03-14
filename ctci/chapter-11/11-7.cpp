@@ -38,7 +38,7 @@ int maxPerson(vector<pair<int, int>>& vec)
         }
     }
 
-    int max = 0;
+    unsigned int max = 0;
     for (auto x : weight)
     {
         if (x.size() > max)

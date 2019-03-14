@@ -27,20 +27,20 @@ class LRU
         if (map.find(key) != map.end())
         {
             map[key]->val = val;
-            list.splice(list.begin(), list, map[key]);
-            map[key] = list.begin();
+            page_list.splice(page_list.begin(), page_list, map[key]);
+            map[key] = page_list.begin();
         }
-        else if (_capacity == list.size())
+        else if (_capacity == page_list.size())
         {
-            map.erase(list.back().key);
-            list.pop_back();
-            list.emplace_front(key, val);
-            map.insert({key, list.begin()});
+            map.erase(page_list.back().key);
+            page_list.pop_back();
+            page_list.emplace_front(key, val);
+            map.insert({key, page_list.begin()});
         }
         else
         {
-            list.emplace_front(key, val);
-            map.insert({key, list.begin()});
+            page_list.emplace_front(key, val);
+            map.insert({key, page_list.begin()});
         }
     }
 

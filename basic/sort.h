@@ -21,7 +21,6 @@ public:
 	void quick(vector<Object> & arr);
 	void shell(vector<Object> & arr);
 	void heap(vector<Object> & arr);
-	void radix(vector<Object> & arr);
 
 
 private:
