@@ -10,7 +10,7 @@ inline int randBetween(int low, int high)
 
 void shuffle(vector<int> vec)
 {
-    for (int i = 0; i < vec.size(); i++)
+    for (int i = vec.size() - 1; i > 0; i--)
     {
         int k = randBetween(0, i);
         swap(vec[k], vec[i]);
